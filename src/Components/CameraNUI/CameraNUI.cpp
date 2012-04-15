@@ -14,9 +14,9 @@ namespace CameraNUI {
 
 CameraNUI::CameraNUI(const std::string & name) : Base::Component(name), 
         skipStop("skip_stop",false),
-        lib("lib",freenect),
-        depthMode("depth_mode",rawMap),
-        cameraMode("camera_mode",bgr) {
+        lib("lib",freenect, "combo"),
+        depthMode("depth_mode",rawMap, "combo"),
+        cameraMode("camera_mode",bgr, "combo") {
 
         LOG(LTRACE) << "Hello CameraNUI\n";
         registerProperty(skipStop);

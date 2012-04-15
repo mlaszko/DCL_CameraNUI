@@ -7,7 +7,7 @@
 #ifndef FREENECTNUIDEVICE_H
 #define	FREENECTNUIDEVICE_H
 
-#include <libfreenect/libfreenect.hpp>
+#include <libfreenect.hpp>
 #include <pthread.h>
 #include <stdio.h>
 #include <iostream>

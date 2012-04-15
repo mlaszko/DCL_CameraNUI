@@ -8,7 +8,7 @@
 			<depth_mode>point_cloud</depth_mode>
 			<camera_mode>gray</camera_mode>
                 </Kinect>
-\
+
                 <Wnd1 type="CvWindow" thread="Exec3" group="s1">
                         <title>Kinect Depth Viewer</title>
                 </Wnd1>

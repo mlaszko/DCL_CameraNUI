@@ -1,5 +1,5 @@
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-SET(WITH_OPENNI ON)
+#SET(WITH_OPENNI ON)
 
 include_directories(.)
 
@@ -16,14 +16,16 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 # # OpenCV library
 FIND_PACKAGE( OpenCV REQUIRED )
 
-FIND_PACKAGE( OpenNI REQUIRED )
-include_directories(${OpenNI_INCLUDE_DIR})
-set(LIBS ${LIBS} ${OpenNI_LIBRARY})
-
-# # libfreenect
-find_package(libfreenect REQUIRED)
-include_directories(${LIBFREENECT_INCLUDE_DIR})
-set(LIBS ${LIBS} ${LIBFREENECT_LIBRARY})
+IF(WITH_OPENNI)
+	FIND_PACKAGE( OpenNI REQUIRED )
+	include_directories(${OpenNI_INCLUDE_DIR})
+	set(LIBS ${LIBS} ${OpenNI_LIBRARY})
+ELSE(WITH_OPENNI)
+	# # libfreenect
+	find_package(libfreenect REQUIRED)
+	include_directories(${LIBFREENECT_INCLUDE_DIR})
+	set(LIBS ${LIBS} ${LIBFREENECT_LIBRARY})
+ENDIF(WITH_OPENNI)
 
 # Find another DCLs our one depends on
 # Use macro: DISCODE_FIND_DCL(<DCL_NAME>)
