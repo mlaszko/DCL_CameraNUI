@@ -16,6 +16,8 @@ DepthMode DepthModeTranslator::fromStr(const std::string & s) {
         return pointCloud;
     else if (s == "valid")
         return valid;    
+    else if (s == "rainbow")
+        return rainbow;
     else
         return normalized;
 }
@@ -27,6 +29,7 @@ std::string DepthModeTranslator::toStr(DepthMode t) {
         case disparityMap: return "disparity_map";
         case dM32f: return "dm32f";
         case pointCloud: return "point_cloud";
+        case rainbow: return "rainbow";
         default: return "normalized";
     }
 }

@@ -65,17 +65,20 @@ void DepthConverter::onNewDepth() {
 		m_depth.convertTo( m_out, CV_8UC1, SCALE_FACTOR );
 		break;
 	case disparityMap:
-		 convertToDisparityMap(m_depth, m_out);
-		 break;
+		convertToDisparityMap(m_depth, m_out);
+		break;
 	case dM32f:
 		convertToDisparityMap32f(m_depth, m_out);
 		break;
 	case pointCloud:
-		 convertToPointCloudMap(m_depth, m_out);
-		 break;
+		convertToPointCloudMap(m_depth, m_out);
+		break;
 	case valid:
-		 convertToValidPixelsMap(m_depth, m_out);
-		 break;
+		convertToValidPixelsMap(m_depth, m_out);
+		break;
+	case rainbow:
+		convertToRainbowMap(m_depth, m_out);
+		break;
 	default:
 		m_depth.copyTo(m_out);
 		break;
@@ -163,6 +166,63 @@ void DepthConverter::convertToDisparityMap32f(cv::Mat& data, cv::Mat& dataOut) {
 
 void DepthConverter::convertToValidPixelsMap(cv::Mat& data, cv::Mat& dataOut) {
 	dataOut = (data != INVALID_PIXEL);
+}
+
+typedef struct{uchar r; uchar g; uchar b;} color;
+
+void DepthConverter::convertToRainbowMap(cv::Mat& data, cv::Mat& dataOut) {
+	cv::Mat out;
+
+	out.create(data.size(), CV_8UC3);
+	for (int y = 0; y < out.rows; y++) {
+		for (int x = 0; x < out.cols; x++) {
+			color col;
+			col.r = col.g = col.b = 0;
+			unsigned short curDepth = data.at<unsigned short>(y, x);
+			int lb = curDepth & 0xff;
+			if (curDepth > 50)
+				switch (curDepth>>8) {
+				case 0:
+					col.b = 255;
+					col.g = 255-lb;
+					col.r = 255-lb;
+					break;
+				case 1:
+					col.b = 255;
+					col.g = lb;
+					col.r = 0;
+					break;
+				case 2:
+					col.b = 255-lb;
+					col.g = 255;
+					col.r = 0;
+					break;
+				case 3:
+					col.b = 0;
+					col.g = 255;
+					col.r = lb;
+					break;
+				case 4:
+					col.b = 0;
+					col.g = 255-lb;
+					col.r = 255;
+					break;
+				case 5:
+					col.b = 0;
+					col.g = 0;
+					col.r = 255-lb;
+					break;
+				default:
+					col.r = col.g = col.b = 0;
+					break;
+				}
+
+			if (curDepth == INVALID_PIXEL)
+				col.r=col.g=col.b = 0;
+			out.at<color>(y, x) = col;
+		}
+	}
+	out.copyTo(dataOut);
 }
 
 } //: namespace DepthConverter

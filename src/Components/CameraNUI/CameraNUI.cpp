@@ -162,8 +162,10 @@ bool CameraNUI::onStart() {
 //            LOG(LINFO) << "focal length = " << fl << std::endl; 
         } else {
 #endif
+
         device->startVideo();
-	device->startDepth();          
+        device->startDepth();
+        device->setDepthFormat(FREENECT_DEPTH_MM);
 #ifdef WITH_OPENNI 
         }
 #endif

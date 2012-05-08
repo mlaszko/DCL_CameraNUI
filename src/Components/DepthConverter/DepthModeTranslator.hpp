@@ -14,7 +14,8 @@ enum DepthMode {
     disparityMap,
     dM32f,
     pointCloud,
-    valid
+    valid,
+    rainbow
 };
 
 class DepthModeTranslator {

@@ -81,6 +81,8 @@ private:
 	void convertToDisparityMap32f(cv::Mat& data, cv::Mat& dataOut);
 	void convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut);
 	void convertToValidPixelsMap(cv::Mat& data, cv::Mat& dataOut);
+	void convertToRainbowMap(cv::Mat& data, cv::Mat& dataOut);
+
 
 	void onNewDepth();
 
