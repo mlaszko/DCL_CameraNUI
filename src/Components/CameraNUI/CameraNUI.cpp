@@ -165,7 +165,7 @@ bool CameraNUI::onStart() {
 
         device->startVideo();
         device->startDepth();
-        device->setDepthFormat(FREENECT_DEPTH_MM);
+        device->setDepthFormat(FREENECT_DEPTH_REGISTERED); // FREENECT_DEPTH_MM
 #ifdef WITH_OPENNI 
         }
 #endif
