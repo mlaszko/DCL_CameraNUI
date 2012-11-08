@@ -36,6 +36,7 @@ public:
 	 */
 	virtual ~DepthConverter();
 
+	void prepareInterface();
 
 protected:
 

@@ -11,6 +11,7 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Property.hpp"
+#include "EventHandler.hpp"
 #include "conf.hpp"
 #ifdef WITH_OPENNI
 #include <opencv2/opencv.hpp>
@@ -43,6 +44,8 @@ public:
         */
         virtual ~CameraNUI();
 
+        void prepareInterface();
+
 protected:
 
         /*!
@@ -69,6 +72,17 @@ protected:
         * Stop component
         */
         bool onStop();
+
+
+
+    	/*!
+    	 * Event handler function.
+    	 */
+    	void onNextImage();
+
+    	/// Event handler.
+    	Base::EventHandler<CameraNUI> h_onNextImage;
+
 
         void convertToGray(cv::Mat& data, cv::Mat& dataOut);
         void convertToDisparityMap(cv::Mat& data, cv::Mat& dataOut);
@@ -104,9 +118,11 @@ protected:
         
         Freenect::Freenect freenectObj;
         FreenectNUIDevice* device;
-        
+
+#ifdef WITH_OPENNI
         cv::VideoCapture capture;        
-        
+#endif
+
         cv::Mat cameraFrame;
         cv::Mat depthFrame;
         Mat show;
