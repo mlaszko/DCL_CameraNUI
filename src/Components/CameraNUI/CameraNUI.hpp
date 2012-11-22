@@ -105,6 +105,7 @@ protected:
 	Base::Property <int, DepthModeTranslator> depthMode;
 	Base::Property <int, CameraModeTranslator> cameraMode;
 	Base::Property <int, LibTranslator> lib;
+	Base::Property <bool> sync;
 
 	Base::DataStreamOut <cv::Mat> outImg;
 	Base::DataStreamOut <cv::Mat> outDepthMap;

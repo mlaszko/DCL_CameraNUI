@@ -21,6 +21,7 @@
 					<param name="lib">freenect</param>
 					<param name="skip_stop">1</param>
 					<param name="camera_mode">rgb</param>
+					<param name="sync">1</param>
 				</Component>
 				
 				<Component name="ProcNorm" type="CameraNUI:DepthConverter" priority="1" bump="0">

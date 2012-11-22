@@ -8,6 +8,7 @@
 #define	FREENECTNUIDEVICE_H
 
 #include <libfreenect.hpp>
+#include <libfreenect_sync.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <iostream>

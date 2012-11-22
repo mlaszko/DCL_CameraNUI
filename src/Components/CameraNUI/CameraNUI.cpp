@@ -17,13 +17,15 @@ CameraNUI::CameraNUI(const std::string & name) :
 		skipStop("skip_stop", false),
 		lib("lib", freenect, "combo"),
 		depthMode("depth_mode", rawMap, "combo"),
-		cameraMode("camera_mode", bgr, "combo") {
+		cameraMode("camera_mode", bgr, "combo"),
+		sync("sync", true) {
 
 	LOG(LTRACE)<< "Hello CameraNUI\n";
 	registerProperty(skipStop);
 	registerProperty(lib);
 	registerProperty(depthMode);
 	registerProperty(cameraMode);
+	registerProperty(sync);
 }
 
 CameraNUI::~CameraNUI() {
@@ -55,7 +57,8 @@ bool CameraNUI::onInit() {
 		std::cout << "Yes. We're here\n";
 	} else {
 #endif
-		device = &freenectObj.createDevice<FreenectNUIDevice>(0);
+		//if (!sync)
+			device = &freenectObj.createDevice<FreenectNUIDevice>(0);
 #ifdef WITH_OPENNI 
 	}
 #endif
@@ -115,9 +118,27 @@ bool CameraNUI::onStep() {
 			}
 		} else {
 #endif
-		device->getVideo(cameraFrame);
-		device->getDepth(depthFrame);
-		// Write camera frame to output data stream
+		if (!sync) {
+			device->getVideo(cameraFrame);
+			device->getDepth(depthFrame);
+		} else {
+			short *depth = 0;
+			char *rgb = 0;
+			uint32_t ts;
+			int ret;
+
+			ret = freenect_sync_get_video((void**)&rgb, &ts, 0, FREENECT_VIDEO_RGB);
+			CLOG(LDEBUG) << "COLOR: " << ret;
+			cv::Mat tmp_rgb(480, 640, CV_8UC3, rgb);
+			cv::cvtColor(tmp_rgb, cameraFrameCopy, CV_RGB2BGR);
+
+			ret = freenect_sync_get_depth((void**)&depth, &ts, 0, FREENECT_DEPTH_REGISTERED);
+			CLOG(LDEBUG) << "DEPTH: " << ret;
+			cv::Mat tmp_depth(480, 640, CV_16SC1, depth);
+			tmp_depth.copyTo(depthFrameCopy);
+		}
+
+		/*// Write camera frame to output data stream
 		// Write depth map to output data stream
 		if (depthMode == normalized) {
 			depthFrame.convertTo(show, CV_8UC1, SCALE_FACTOR);
@@ -138,7 +159,7 @@ bool CameraNUI::onStep() {
 			convertToGray(cameraFrame, cameraFrameCopy);
 		} else {
 			cameraFrame.copyTo(cameraFrameCopy);
-		}
+		}*/
 #ifdef WITH_OPENNI
 	}
 #endif
@@ -154,7 +175,7 @@ bool CameraNUI::onStep() {
 }
 
 bool CameraNUI::onStop() {
-	if (!(skipStop || lib == opencv)) {
+	if (!(skipStop || lib == opencv || sync)) {
 		device->stopVideo();
 		device->stopDepth();
 	}
@@ -176,9 +197,11 @@ bool CameraNUI::onStart() {
 	} else {
 #endif
 
-	device->startVideo();
-	device->startDepth();
-	device->setDepthFormat(FREENECT_DEPTH_REGISTERED); // FREENECT_DEPTH_MM
+		if (!sync) {
+			device->startVideo();
+			device->startDepth();
+			device->setDepthFormat(FREENECT_DEPTH_REGISTERED); // FREENECT_DEPTH_MM
+		}
 #ifdef WITH_OPENNI 
 		}
 #endif
