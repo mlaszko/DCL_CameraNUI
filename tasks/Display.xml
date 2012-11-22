@@ -16,7 +16,7 @@
 	<!-- task definition -->
 	<Subtasks>
 		<Subtask name="Processing">
-			<Executor name="Exec1"  period="2">
+			<Executor name="Exec1"  period="0.1">
 				<Component name="Source" type="CameraNUI:CameraNUI" priority="1" bump="0">
 					<param name="lib">freenect</param>
 					<param name="skip_stop">1</param>
@@ -43,8 +43,8 @@
 		</Subtask>
 		
 		<Subtask name="Visualisation">
-			<Executor name="Exec2" period="0.2">
-				<Component name="Window" type="CvBasic:CvWindow" priority="1" bump="5">
+			<Executor name="Exec2" period="0.01">
+				<Component name="Window" type="CvBasic:CvWindow" priority="1" bump="0">
 					<param name="count">5</param>
 					<param name="title">RGB,Depth,Disparity,Rainbow,Valid</param>
 				</Component>

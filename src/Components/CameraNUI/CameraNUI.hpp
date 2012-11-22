@@ -12,17 +12,12 @@
 #include "DataStream.hpp"
 #include "Property.hpp"
 #include "EventHandler.hpp"
-#include "conf.hpp"
-#ifdef WITH_OPENNI
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#else
-#include <cv.h>
-#endif
-#include "FreenectNUIDevice.hpp"
-#include "LibTranslator.hpp"
-#include "DepthModeTranslator.hpp"
-#include "CameraModeTranslator.hpp"
+
+#include <Types/CameraInfo.hpp>
+
+#include <opencv2/core/core.hpp>
+
+#include <libfreenect_sync.h>
 
 namespace Processors {
 namespace CameraNUI {
@@ -60,7 +55,7 @@ protected:
 	/*!
 	 * Retrieves data from device.
 	 */
-	bool onStep();
+	bool onStep() { return true; };
 
 	/*!
 	 * Start component
@@ -80,49 +75,17 @@ protected:
 	/// Event handler.
 	Base::EventHandler <CameraNUI> h_onNextImage;
 
-	void convertToGray(cv::Mat& data, cv::Mat& dataOut);
-	void convertToDisparityMap(cv::Mat& data, cv::Mat& dataOut);
-	void convertToDisparityMap32f(cv::Mat& data, cv::Mat& dataOut);
-	void convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut);
-	void convertToValidPixelsMap(cv::Mat& data, cv::Mat& dataOut);
-
-	// depth map normalization factor
-	static const float SCALE_FACTOR = 255.0 / 2048.0;
-	// openKinect documentation:
-	// "When the Kinect can't see the ir reflection
-	// or has no depth data for a pixel, it returns
-	// 2047 for the depth value"
-	static const int INVALID_PIXEL = 2047;
-	static const int INVALID_COORDINATE = 100000;
-	// baseline and focal length from opencv properties
-	static const int BASELINE = 75;
-	static const int FOCAL_LENGTH = 575;
-	// for now only this resolution fully supported
-	static const int COLS = 640;
-	static const int ROWS = 480;
-
-	Base::Property <bool> skipStop;
-	Base::Property <int, DepthModeTranslator> depthMode;
-	Base::Property <int, CameraModeTranslator> cameraMode;
-	Base::Property <int, LibTranslator> lib;
 	Base::Property <bool> sync;
 
 	Base::DataStreamOut <cv::Mat> outImg;
 	Base::DataStreamOut <cv::Mat> outDepthMap;
-
-	Base::Event* newImage;
-	Base::Event* newDepthMap;
-
-	Freenect::Freenect freenectObj;
-	FreenectNUIDevice* device;
-
-#ifdef WITH_OPENNI
-	cv::VideoCapture capture;
-#endif
+	Base::DataStreamOut <Types::CameraInfo> camera_info;
 
 	cv::Mat cameraFrame;
 	cv::Mat depthFrame;
-	Mat show;
+	cv::Mat show;
+
+	Types::CameraInfo m_camera_info;
 };
 
 } //: namespace CameraNUI
