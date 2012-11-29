@@ -17,7 +17,7 @@ namespace CameraNUI {
 CameraNUI::CameraNUI(const std::string & name) :
 		Base::Component(name),
 		sync("sync", true),
-		m_camera_info(640, 480, 525, 525, 319.5, 239.5) {
+		m_camera_info(640, 480, 319.5, 239.5, 525, 525) {
 
 	LOG(LTRACE)<< "Hello CameraNUI\n";
 	registerProperty(sync);
@@ -31,9 +31,10 @@ void CameraNUI::prepareInterface() {
 
 	// Register data streams
 	registerStream("out_img", &outImg);
-
-	// TODO: unify this
 	registerStream("out_depth", &outDepthMap);
+	registerStream("out_camera_info", &camera_info);
+
+
 
 	h_onNextImage.setup(this, &CameraNUI::onNextImage);
 	registerHandler("onNextImage", &h_onNextImage);
