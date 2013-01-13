@@ -92,7 +92,7 @@ void DepthConverter::onNewDepth() {
 	}
 
 	out_img.write(m_out);
-	newImage->raise();
+//	newImage->raise();
 }
 
 /*
