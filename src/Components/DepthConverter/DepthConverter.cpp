@@ -24,8 +24,7 @@ DepthConverter::~DepthConverter() {
 	LOG(LTRACE) << "Good bye DepthConverter\n";
 }
 
-bool DepthConverter::onInit() {
-	LOG(LTRACE) << "DepthConverter::initialize\n";
+void DepthConverter::prepareInterface() {
 
 	// Register data streams, events and event handlers HERE!
 	h_onNewDepth.setup(this, &DepthConverter::onNewDepth);
@@ -33,7 +32,15 @@ bool DepthConverter::onInit() {
 	registerStream("in_depth", &in_depth);
 
 	newImage = registerEvent("newImage");
+	registerStream("out_depth", &out_img);
 	registerStream("out_img", &out_img);
+
+	addDependency("onNewDepth", &in_depth);
+}
+
+bool DepthConverter::onInit() {
+	LOG(LTRACE) << "DepthConverter::initialize\n";
+
 
 	return true;
 }

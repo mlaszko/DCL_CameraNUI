@@ -14,7 +14,7 @@
 
 #include "DepthModeTranslator.hpp"
 
-#include <cv.h>
+#include <opencv2/core/core.hpp>
 
 namespace Processors {
 namespace DepthConverter {
@@ -36,6 +36,7 @@ public:
 	 */
 	virtual ~DepthConverter();
 
+	void prepareInterface();
 
 protected:
 
