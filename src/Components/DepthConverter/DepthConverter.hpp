@@ -8,7 +8,6 @@
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
-#include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Property.hpp"
 
@@ -71,9 +70,6 @@ protected:
 	/// Input data stream
 	Base::DataStreamIn <cv::Mat> in_depth;
 
-	/// Event raised, when image is processed
-	Base::Event * newImage;
-
 	/// Output data stream - processed image
 	Base::DataStreamOut <cv::Mat> out_img;
 
@@ -115,6 +111,6 @@ private:
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("DepthConverter", Processors::DepthConverter::DepthConverter, Common::Panel_Empty)
+REGISTER_COMPONENT("DepthConverter", Processors::DepthConverter::DepthConverter)
 
 #endif /* DEPTHCONVERTER_HPP_ */

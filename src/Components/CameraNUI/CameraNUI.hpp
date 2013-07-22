@@ -8,7 +8,6 @@
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
-#include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Property.hpp"
 #include "EventHandler.hpp"
@@ -94,7 +93,6 @@ protected:
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("CameraNUI", Processors::CameraNUI::CameraNUI,
-		Common::Panel_Empty)
+REGISTER_COMPONENT("CameraNUI", Processors::CameraNUI::CameraNUI)
 
 #endif /* CAMERANUI_HPP_ */
