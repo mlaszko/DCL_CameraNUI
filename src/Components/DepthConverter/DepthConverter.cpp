@@ -31,7 +31,8 @@ void DepthConverter::prepareInterface() {
 	registerHandler("onNewDepth", &h_onNewDepth);
 	registerStream("in_depth", &in_depth);
 
-	newImage = registerEvent("newImage");
+	addDependency("onNewDepth", &in_depth);
+
 	registerStream("out_depth", &out_img);
 	registerStream("out_img", &out_img);
 
@@ -92,7 +93,6 @@ void DepthConverter::onNewDepth() {
 	}
 
 	out_img.write(m_out);
-//	newImage->raise();
 }
 
 /*

@@ -25,6 +25,7 @@ ELSE(WITH_OPENNI)
 	find_package(libfreenect REQUIRED)
 	include_directories(${LIBFREENECT_INCLUDE_DIR})
 	set(LIBS ${LIBS} ${LIBFREENECT_LIBRARY})
+	MESSAGE("Include: ${LIBFREENECT_INCLUDE_DIR}")
 ENDIF(WITH_OPENNI)
 
 # Find another DCLs our one depends on
