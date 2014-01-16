@@ -8,10 +8,9 @@ FILE(GLOB files *.cpp)
 FIND_PACKAGE( OpenCV REQUIRED )
 
 # Create an executable file from sources:
-ADD_LIBRARY(DepthConverter SHARED ${files})
+ADD_LIBRARY(RGBDViewer SHARED ${files})
 
-# Add aother libraries if necessary, for example:
-TARGET_LINK_LIBRARIES(DepthConverter ${DisCODe_LIBRARIES} ${OpenCV_LIBS} )
+# Link external libraries
+TARGET_LINK_LIBRARIES(RGBDViewer ${DisCODe_LIBRARIES} ${OpenCV_LIBS})
 
-INSTALL_COMPONENT(DepthConverter)
- 
+INSTALL_COMPONENT(RGBDViewer)
