@@ -5,6 +5,3 @@ ADD_COMPONENT(DepthConverter)
 
 ADD_COMPONENT(RGBDViewer)
 
-
-
-ADD_COMPONENT(RGBDLoader)

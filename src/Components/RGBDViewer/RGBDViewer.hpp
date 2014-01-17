@@ -67,19 +67,46 @@ protected:
 	bool onStop();
 
 	/*!
-	 * Event handler function.
+	 * Callback called when filename is changed
+	 */
+	void onFilenameChanged(const std::string & old_filename,
+			const std::string & new_filename);
+
+	/*!
+	 * Callback called when dir is changed
+	 */
+	void onDirChanged(const std::string & old_dir, const std::string & new_dir);
+
+	/*!
+	 * Event handler function - refreshes windows with RGBD image.
 	 */
 	void onNewRGBDImage();
 
-	/// Event handler.
+	/*!
+	 * Event handler function - for saving RGBD image to file.
+	 */
+	void onSaveRGBDImage();
+
+	/// Event handler for refreshing.
 	Base::EventHandler <RGBDViewer> h_onNewRGBDImage;
+
+	/// Event handler for saving.
+	Base::EventHandler <RGBDViewer> h_onSaveRGBDImage;
 
 	/// Input data stream containing colour.
 	Base::DataStreamIn <cv::Mat> in_rgb;
 	
 	/// Input data stream containing depth.
 	Base::DataStreamIn <cv::Mat> in_depth;
+
+	/// RGB image to be drawn/saved.
+	cv::Mat rgb_img;
+
+	/// Depth image to be drawn/saved.
+	cv::Mat depth_img;
 	
+	Base::Property<std::string> filename;
+	Base::Property<std::string> dir;
 
 };
 
