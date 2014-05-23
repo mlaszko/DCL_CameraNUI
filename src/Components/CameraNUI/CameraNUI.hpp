@@ -75,6 +75,7 @@ protected:
 	Base::EventHandler <CameraNUI> h_onNextImage;
 
 	Base::Property <bool> sync;
+	Base::Property <int> index;
 
 	Base::DataStreamOut <cv::Mat> outImg;
 	Base::DataStreamOut <cv::Mat> outDepthMap;

@@ -22,21 +22,22 @@
 					<param name="skip_stop">1</param>
 					<param name="camera_mode">rgb</param>
 					<param name="sync">1</param>
+					<param name="index">0</param>
 				</Component>
 				
-				<Component name="ProcNorm" type="CameraNUI:DepthConverter" priority="1" bump="0">
+				<Component name="ProcNorm" type="CameraNUI:DepthConverter" priority="2" bump="0">
 					<param name="depth_mode">normalized</param>
 				</Component>
 				
-				<Component name="ProcDisp" type="CameraNUI:DepthConverter" priority="1" bump="0">
+				<Component name="ProcDisp" type="CameraNUI:DepthConverter" priority="3" bump="0">
 					<param name="depth_mode">disparity_map</param>
 				</Component>
 				
-				<Component name="ProcRain" type="CameraNUI:DepthConverter" priority="1" bump="0">
+				<Component name="ProcRain" type="CameraNUI:DepthConverter" priority="4" bump="0">
 					<param name="depth_mode">rainbow</param>
 				</Component>
 				
-				<Component name="ProcValid" type="CameraNUI:DepthConverter" priority="1" bump="0">
+				<Component name="ProcValid" type="CameraNUI:DepthConverter" priority="5" bump="0">
 					<param name="depth_mode">valid</param>
 				</Component>
 			</Executor>

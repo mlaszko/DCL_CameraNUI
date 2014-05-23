@@ -73,6 +73,17 @@ else (LIBFREENECT_LIBRARIES AND LIBFREENECT_INCLUDE_DIRS)
       /opt/local/lib
       /sw/lib
   )
+  
+  find_library(LIBFREENECT_SYNC_LIBRARY
+    NAMES
+      freenect_sync
+    PATHS
+      /usr/local/lib64
+      /usr/lib
+      /usr/local/lib
+      /opt/local/lib
+      /sw/lib
+  )
   set(LIBFREENECT_INCLUDE_DIRS
     ${LIBFREENECT_INCLUDE_DIR}
   )
@@ -81,6 +92,7 @@ else (LIBFREENECT_LIBRARIES AND LIBFREENECT_INCLUDE_DIRS)
   )
   set(LIBFREENECT_LIBRARIES
     ${LIBFREENECT_LIBRARY}
+    ${LIBFREENECT_SYNC_LIBRARY}
 )
   if (LIBFREENECT_INCLUDE_DIRS AND LIBFREENECT_LIBRARIES AND LIBFREENECT_REG_INCLUDE_DIRS)
      set(LIBFREENECT_FOUND TRUE)
