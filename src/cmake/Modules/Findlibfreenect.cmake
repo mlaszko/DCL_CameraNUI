@@ -63,6 +63,14 @@ else (LIBFREENECT_LIBRARIES AND LIBFREENECT_INCLUDE_DIRS)
 	  libfreenect
   )
   
+  find_path(LIBFREENECT_LIB_DIR
+    NAMES
+	libfreenect.so
+    PATHS
+      /usr/lib
+      /usr/local/lib
+  )
+  
   find_library(LIBFREENECT_LIBRARY
     NAMES
       freenect
