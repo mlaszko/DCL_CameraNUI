@@ -2,3 +2,6 @@
 ADD_COMPONENT(CameraNUI)
 
 ADD_COMPONENT(DepthConverter)
+
+ADD_COMPONENT(RGBDViewer)
+
