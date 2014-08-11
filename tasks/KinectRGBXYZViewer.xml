@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- reference task information -->
+	<Reference>
+		<Author>
+			<name>Tomasz Kornuta</name>
+			<link></link>
+		</Author>
+		
+		<Description>
+			<brief>Kinect RGB-XYZ viewer</brief>
+			<full>Displays RGB image with Depth map. Allows saving of RGB and XYZ (image containing XYZ coordinages) to files (png and yaml respectivelly).</full>	
+		</Description>
+	</Reference>
+	
+	<!-- task definition -->
+	<Subtasks>
+		<Subtask name="Processing">
+			<Executor name="Exec1"  period="0.1">
+				<Component name="Source" type="CameraNUI:CameraNUI" priority="1" bump="0">
+					<param name="sync">1</param>
+				</Component>
+				
+				<Component name="ProcRain" type="CameraNUI:DepthConverter" priority="2" bump="0">
+					<param name="depth_mode">rainbow</param>
+				</Component>
+
+				<Component name="ProcXYZ" type="CameraNUI:DepthConverter" priority="3" bump="0">
+					<param name="depth_mode">point_cloud</param>
+				</Component>
+				
+			</Executor>
+		</Subtask>
+		
+		<Subtask name="Visualization">
+			<Executor name="Exec2" period="0.1">
+				<Component name="Window" type="CvBasic:CvWindow" priority="1" bump="0">
+					<param name="count">2</param>
+					<param name="title">RGB,Rainbow</param>
+				</Component>
+			</Executor>
+		</Subtask>	
+	
+		<Subtask name="Writing">
+			<Executor name="Exec3" period="0.1">
+				<Component name="ImageWriter" type="CvBasic:ImageWriter" priority="1" bump="0">
+					<param name="directory">%[TASK_LOCATION]%/../data/</param>
+					<param name="count">2</param>
+					<param name="digits">1</param>
+					<param name="base_name">rgb,xyz</param>
+					<param name="format">png,yml</param>
+					<param name="mode.auto_trigger">0</param>
+				</Component>
+			</Executor>
+		</Subtask>	
+
+
+	</Subtasks>
+		
+	<!-- pipes connecting datastreams -->
+	<DataStreams>
+		<Source name="Source.out_img">
+			<sink>Window.in_img0</sink>		
+			<sink>ImageWriter.in_img0</sink>		
+		</Source>
+		<Source name="Source.out_depth">
+			<sink>ProcRain.in_depth</sink>
+			<sink>ProcXYZ.in_depth</sink>
+		</Source>
+		<Source name="ProcRain.out_depth">
+			<sink>Window.in_img1</sink>		
+		</Source>
+		<Source name="ProcXYZ.out_depth">
+			<sink>ImageWriter.in_img1</sink>		
+		</Source>
+	</DataStreams>
+</Task>
+
+
+
+

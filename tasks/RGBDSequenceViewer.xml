@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- reference task information -->
+	<Reference>
+		<Author>
+			<name>Tomasz Kornuta</name>
+			<link></link>
+		</Author>
+		
+		<Description>
+			<brief>Simple RGB-D sequence viewer</brief>
+			<full>Displays two windows - with RGB and depth images.</full>	
+		</Description>
+	</Reference>
+	
+	<!-- task definition -->
+	<Subtasks>
+		<Subtask name="Processing">
+			<Executor name="Processing"  period="1">
+				<Component name="RGBSequence" type="CvBasic:Sequence" priority="1" bump="0">
+<!--					<param name="sequence.directory">%[TASK_LOCATION]%/../data</param> -->
+					<param name="sequence.directory">./</param>
+					<param name="sequence.pattern">.*_rgb.png</param>
+                                        <param name="mode.loop">1</param>
+                                        <param name="mode.iterate">0</param>
+				</Component>
+				<Component name="DepthSequence" type="CvBasic:Sequence" priority="2" bump="0">
+<!--					<param name="sequence.directory">%[TASK_LOCATION]%/../data</param> -->
+					<param name="sequence.directory">./</param>
+					<param name="sequence.pattern">.*_depth.png</param>
+                                        <param name="mode.loop">1</param>
+                                        <param name="mode.iterate">0</param>
+				</Component>
+				 
+				
+				<Component name="ProcRain" type="CameraNUI:DepthConverter" priority="3" bump="0">
+					<param name="depth_mode">rainbow</param>
+				</Component>
+				
+			</Executor>
+		</Subtask>
+		
+		<Subtask name="Visualization">
+			<Executor name="Exec2" period="0.01">
+				<Component name="Window" type="CvBasic:CvWindow" priority="2" bump="0">
+					<param name="count">3</param>
+					<param name="title">RGB,Depth,Rainbow</param>
+				</Component>
+			</Executor>
+		</Subtask>	
+	
+	</Subtasks>
+		
+	<!-- pipes connecting datastreams -->
+	<DataStreams>
+		<Source name="RGBSequence.out_img">
+			<sink>Window.in_img0</sink>		
+		</Source>
+		<Source name="DepthSequence.out_img">
+			<sink>ProcRain.in_depth</sink>
+			<sink>Window.in_img1</sink>		
+		</Source>
+		<Source name="ProcRain.out_depth">
+			<sink>Window.in_img2</sink>		
+		</Source>
+	</DataStreams>
+</Task>
+
+
+
+

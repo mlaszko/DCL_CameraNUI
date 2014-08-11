@@ -27,7 +27,24 @@ Dependencies
 
 - Check WITH_OPENNI option in cmake accordingly here
 
+Tasks
+------------
+Kinect acquisition:
+   * __KinectDisplay__ - Simple Kinect viewer, shows possible depth conversions. 
+   * __KinectRGBDViewer__ - Displays RGB image with the associated depth map, allows saving of both color and depth to png files with a proper data format.
+   * __KinectRGBXYZViewer__ - Displays RGB image with Depth map. Allows saving of RGB and XYZ (image containing XYZ coordinages) to files (png and yaml respectivelly). 
+    
+RGB-D sequences from files:   
+   * __RGBDSequenceViewer__ - Displays two windows - with RGB and depth images.
+
+
+Developers
+----------
+Michal Lisicki
+
+Maciej Stefańczyk
+
 Maintainer
 ----------
+Tomasz Kornuta
 
-Michal Lisicki
