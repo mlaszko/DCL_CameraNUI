@@ -89,8 +89,9 @@ private:
 	// "When the Kinect can't see the ir reflection
 	// or has no depth data for a pixel, it returns
 	// 2047 for the depth value"
-	static const int INVALID_PIXEL = 2047;
-	static const int INVALID_COORDINATE = 100000;
+    // 02.09.2014 FIX: according to the LibFreeNect documentation 0 is the value returned in the case of invalid depth.
+    static const int INVALID_PIXEL = 0;
+    static const int INVALID_COORDINATE = 100000;
 	// baseline and focal length from opencv properties
 	static const int BASELINE = 75;
 	static const int FOCAL_LENGTH = 575;

@@ -15,13 +15,13 @@ namespace DepthConverter {
 DepthConverter::DepthConverter(const std::string & name) :
 		Base::Component(name),
 		depthMode("depth_mode",rawMap, "combo") {
-	LOG(LTRACE) << "Hello DepthConverter\n";
+    CLOG(LTRACE) << "Hello DepthConverter";
 
     registerProperty(depthMode);
 }
 
 DepthConverter::~DepthConverter() {
-	LOG(LTRACE) << "Good bye DepthConverter\n";
+    CLOG(LTRACE) << "Good bye DepthConverter";
 }
 
 void DepthConverter::prepareInterface() {
@@ -40,20 +40,20 @@ void DepthConverter::prepareInterface() {
 }
 
 bool DepthConverter::onInit() {
-	LOG(LTRACE) << "DepthConverter::initialize\n";
+    CLOG(LTRACE) << "DepthConverter::initialize";
 
 
 	return true;
 }
 
 bool DepthConverter::onFinish() {
-	LOG(LTRACE) << "DepthConverter::finish\n";
+    CLOG(LTRACE) << "DepthConverter::finish";
 
 	return true;
 }
 
 bool DepthConverter::onStep() {
-	LOG(LTRACE) << "DepthConverter::step\n";
+    CLOG(LTRACE) << "DepthConverter::step";
 	return true;
 }
 
@@ -66,6 +66,7 @@ bool DepthConverter::onStart() {
 }
 
 void DepthConverter::onNewDepth() {
+    CLOG(LTRACE) << "DepthConverter::onNewDepth()";
 	m_depth = in_depth.read();
 
 	switch(depthMode) {
@@ -99,6 +100,7 @@ void DepthConverter::onNewDepth() {
  * Based on OpenCv HighGUI
  */
 void DepthConverter::convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut) {
+    CLOG(LTRACE) << "DepthConverter::convertToPointCloudMap()";
 	// !! This data are not exactly the same as when using opencv. Might need
 	// some adjustments in the future. It's supposed to imitate the function
 	// xnConvertProjectiveToRealWorld from OpenNI. Some attempt for this
@@ -115,11 +117,11 @@ void DepthConverter::convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut) {
 
 	cv::Mat pointCloud_XYZ(ROWS, COLS, CV_32FC3,
 			cv::Scalar::all (INVALID_PIXEL));
-
 	for (int y = 0; y < ROWS; y++) {
 		for (int x = 0; x < COLS; x++) {
 			double depth = data.at<unsigned short>(y, x);
 			// Check for invalid measurements
+            cout<<depth<<" ";
 			if (depth == INVALID_PIXEL) // not valid
 				pointCloud_XYZ.at < cv::Point3f > (y, x) = cv::Point3f(
 						INVALID_COORDINATE, INVALID_COORDINATE,
@@ -128,10 +130,11 @@ void DepthConverter::convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut) {
 				float xx = ((x - cx_d) * depth * fx_d) * 0.001f;
 				float yy = ((y - cy_d) * depth * fy_d) * 0.001f;
 				float dd = depth * 0.001f;
-				float zz = sqrt(dd*dd-xx*xx-yy*yy);
+                //float zz = sqrt(dd*dd-xx*xx-yy*yy);
 				pointCloud_XYZ.at < cv::Point3f > (y, x) = cv::Point3f(xx, yy, dd);
 			}
 		}
+        cout<<endl;
 	}
 
 	pointCloud_XYZ.copyTo(dataOut);
@@ -141,6 +144,7 @@ void DepthConverter::convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut) {
  * Based on OpenCv HighGUI
  */
 void DepthConverter::convertToDisparityMap(cv::Mat& data, cv::Mat& dataOut) {
+    CLOG(LTRACE) << "DepthConverter::convertToDisparityMap()";
 	cv::Mat disp32;
 
 	double mult = BASELINE * FOCAL_LENGTH;
@@ -158,6 +162,7 @@ void DepthConverter::convertToDisparityMap(cv::Mat& data, cv::Mat& dataOut) {
 }
 
 void DepthConverter::convertToDisparityMap32f(cv::Mat& data, cv::Mat& dataOut) {
+    CLOG(LTRACE) << "DepthConverter::convertToDisparityMap32f()";
 	double mult = BASELINE * FOCAL_LENGTH;
 
 	dataOut.create(data.size(), CV_32FC1);
@@ -172,12 +177,14 @@ void DepthConverter::convertToDisparityMap32f(cv::Mat& data, cv::Mat& dataOut) {
 }
 
 void DepthConverter::convertToValidPixelsMap(cv::Mat& data, cv::Mat& dataOut) {
+    CLOG(LTRACE) << "DepthConverter::convertToValidPixelsMap()";
 	dataOut = (data != INVALID_PIXEL);
 }
 
 typedef struct{uchar r; uchar g; uchar b;} color;
 
 void DepthConverter::convertToRainbowMap(cv::Mat& data, cv::Mat& dataOut) {
+    CLOG(LTRACE) << "DepthConverter::convertToRainbowMap()";
 	cv::Mat out;
 
 	out.create(data.size(), CV_8UC3);
@@ -225,7 +232,7 @@ void DepthConverter::convertToRainbowMap(cv::Mat& data, cv::Mat& dataOut) {
 				}
 
 			if (curDepth == INVALID_PIXEL)
-				col.r=col.g=col.b = 0;
+                col.r=col.g=col.b = 0;
 			out.at<color>(y, x) = col;
 		}
 	}
