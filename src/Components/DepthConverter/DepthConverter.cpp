@@ -121,7 +121,6 @@ void DepthConverter::convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut) {
 		for (int x = 0; x < COLS; x++) {
 			double depth = data.at<unsigned short>(y, x);
 			// Check for invalid measurements
-            cout<<depth<<" ";
 			if (depth == INVALID_PIXEL) // not valid
 				pointCloud_XYZ.at < cv::Point3f > (y, x) = cv::Point3f(
 						INVALID_COORDINATE, INVALID_COORDINATE,
@@ -134,7 +133,6 @@ void DepthConverter::convertToPointCloudMap(cv::Mat& data, cv::Mat& dataOut) {
 				pointCloud_XYZ.at < cv::Point3f > (y, x) = cv::Point3f(xx, yy, dd);
 			}
 		}
-        cout<<endl;
 	}
 
 	pointCloud_XYZ.copyTo(dataOut);
